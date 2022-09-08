@@ -1,20 +1,23 @@
 import { useEffect, useState } from 'react'
 import MsgItem from './MsgItem'
-
-// [
-//   {
-//     id: 1,
-//     userId: getRandomUserId(),
-//     timestamp: 1234567890123,
-//     text: '1 mock text'
-//   }
-// ]
+import MsgInput from './MsgInput'
 
 const MsgList = () => {
   const [msgs, setMsgs] = useState([])
 
   const UserIds = ['roy', 'jay']
   const getRandomUserId = () => UserIds[Math.round(Math.random())]
+
+  const onCreate = (text) => {
+    const newMsg = {
+      id: msgs.length + 1,
+      userId: getRandomUserId(),
+      timestamp: Date.now(),
+      text: `${msgs.length} ${text}`,
+    }
+
+    setMsgs((msgs) => [newMsg, ...msgs])
+  }
 
   useEffect(() => {
     setMsgs(
@@ -31,11 +34,14 @@ const MsgList = () => {
   }, [])
 
   return (
-    <ul className="messages">
-      {msgs.map((x) => (
-        <MsgItem key={x.id} {...x} />
-      ))}
-    </ul>
+    <>
+      <MsgInput mutate={onCreate} />
+      <ul className="messages">
+        {msgs.map((x) => (
+          <MsgItem key={x.id} {...x} />
+        ))}
+      </ul>
+    </>
   )
 }
 
