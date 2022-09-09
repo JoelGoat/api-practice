@@ -1,4 +1,5 @@
 import { readDB, writeDB } from '../dbController.js'
+import { v4 } from 'uuid'
 
 const getMsgs = () => readDB('messages')
 const setMsgs = (data) => writeDB('messages', data)
@@ -43,7 +44,7 @@ const messagesRoute = [
   },
   {
     method: 'put',
-    route: '/messages',
+    route: '/messages/:id',
     handler: ({ body, params: { id } }, res) => {
       try {
         const msgs = getMsgs()
@@ -62,13 +63,13 @@ const messagesRoute = [
   },
   {
     method: 'delete',
-    route: '/messages',
-    handler: ({ body, params: { id } }, res) => {
+    route: '/messages/:id',
+    handler: ({ params: { id }, query: { userId } }, res) => {
       try {
         const msgs = getMsgs()
         const targetIndex = msgs.findIndex((msg) => msg.id === id)
         if (targetIndex < 0) throw '메세지가 없습니다.'
-        if (msgs[targetIndex].userId !== body.userId) throw '사용자가 다릅니다.'
+        if (msgs[targetIndex].userId !== userId) throw '사용자가 다릅니다.'
 
         msgs.splice(targetIndex, 1)
         setMsgs(msgs)
