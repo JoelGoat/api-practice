@@ -6,8 +6,8 @@ const userSchema = gql`
     nickname: String!
   }
 
-  extend type Query{
-    users(): [User!]
+  extend type Query {
+    users: [User!]
     user(id: ID!): User
   }
 `
