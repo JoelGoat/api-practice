@@ -5,8 +5,9 @@ const setMsgs = (data) => writeDB('messages', data)
 
 const messageResolver = {
   Query: {
-    messages: (parent, arg, { db }) => {
-      return db.messages
+    messages: (parent, { cursor = '' }, { db }) => {
+      const fromIndex = db.messages.findIndex((msg) => msg.id === cursor) + 1
+      return db.messages.slice(fromIndex, fromIndex + 15) || []
     },
     message: (parent, { id = '' }, { db }) => {
       return db.messages.find((msg) => msg.id === id)
