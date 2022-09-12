@@ -34,7 +34,7 @@ export const CREATE_MESSAGE = gql`
 `
 
 export const UPDATE_MESSAGE = gql`
-  mutation UPDATE_MESSAGE($id: ID!, $test: String!, $userId: ID!) {
+  mutation UPDATE_MESSAGE($id: ID!, $text: String!, $userId: ID!) {
     updateMessage(id: $id, text: $text, userId: $userId) {
       id
       text
